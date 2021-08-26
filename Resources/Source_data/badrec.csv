@@ -1,3 +1,0 @@
-EMP_NO,FIRST_NAME,MIDDLE_INITIAL,LAST_NAME,SSN,ADDRESS,ADDRESS_2,CITY,STATE,ZIP,PHONE_NO,EMAIL,JOBTITLE,HIREDATE,DOB,FEDFILINGSTATUS,WORKSTATE,BANK_RTN,BANK_ACC,BANK_NAME,BANK_TYPE,EMP_STATUS,PAYCODE,PAYRATE,Issue
-101010,,,,,142 w 22nd street,,Houston,TX,77361,8328561165,employee11@gmail.com,Team Member,44426,28087,Single or Married filing separately,TX,091408734,16874136,Prinko Bank,Checking,Inactive,Hourly,18,Name is Missing
-101025,Miracle,,Thomas,,8930 south Elizabeth,House,Woodlands,TX,77654,8328561180,employee26@gmail.com,Financial Analyst,08/18/2021,11/24/2002,Head of Household,TX,091000019,21546931354,Mega Bank,Checking,Active,Hourly,40,SSN is Missing

@@ -129,6 +129,7 @@ upval_employee_data_updates["Issue"] = np.where(upval_employee_data_updates["EMP
 
 upval_employee_data_good_records = upval_employee_data_updates.dropna(subset=["FIRST_NAME","SSN","JOBTITLE","HIREDATE","DOB","FEDFILINGSTATUS","WORKSTATE","BANK_RTN","BANK_ACC","EMP_STATUS","PAYCODE","PAYRATE"])
 upval_employee_data_good_records = upval_employee_data_good_records.drop(labels="Issue", axis=1)
+upval_employee_data_good_records.to_csv(Path("../Resources/Source_data/updates.csv"), index=False, na_rep="")
 
 upval_employee_data_issues = upval_employee_data_updates[upval_employee_data_updates["Issue"] != ""]
 upval_employee_data_issues = upval_employee_data_issues.rename_axis(mapper="Record#", axis=1)
@@ -170,6 +171,7 @@ if ques1 == "Y":
 
                 upval_employee_data_good_records = upval_employee_data_updates.dropna(subset=["FIRST_NAME","SSN","JOBTITLE","HIREDATE","DOB","FEDFILINGSTATUS","WORKSTATE","BANK_RTN","BANK_ACC","EMP_STATUS","PAYCODE","PAYRATE"])
                 upval_employee_data_good_records = upval_employee_data_good_records.drop(labels="Issue", axis=1)
+                upval_employee_data_good_records.to_csv(Path("../Resources/Source_data/updates.csv"), index=False, na_rep="")
 
                 upval_employee_data_issues = upval_employee_data_updates[upval_employee_data_updates["Issue"] != ""]
                 upval_employee_data_issues = upval_employee_data_issues.rename_axis(mapper="Record#", axis=1)
@@ -203,6 +205,7 @@ if ques1 == "Y":
 
                             upval_employee_data_good_records = upval_employee_data_updates.dropna(subset=["FIRST_NAME","SSN","JOBTITLE","HIREDATE","DOB","FEDFILINGSTATUS","WORKSTATE","BANK_RTN","BANK_ACC","EMP_STATUS","PAYCODE","PAYRATE"])
                             upval_employee_data_good_records = upval_employee_data_good_records.drop(labels="Issue", axis=1)
+                            upval_employee_data_good_records.to_csv(Path("../Resources/Source_data/updates.csv"), index=False, na_rep="")
 
                             upval_employee_data_issues = upval_employee_data_updates[upval_employee_data_updates["Issue"] != ""]
                             upval_employee_data_issues = upval_employee_data_issues.rename_axis(mapper="Record#", axis=1)
@@ -251,24 +254,7 @@ else:
 print("Adding Good Records to Employee Master")
 upval_employee_data = pd.read_csv(Path("../Resources/Source_data/master.csv"), index_col = "EMP_NO", keep_default_na = False, dtype = {"SSN" : str, "BANK_RTN" : str, "BANK_ACC" : str})
 upval_employee_data_updates = pd.read_csv(Path("../Resources/Source_data/updates.csv"), index_col = "EMP_NO", keep_default_na = False, dtype = {"SSN" : str, "BANK_RTN" : str, "BANK_ACC" : str}) 
-upval_employee_data = upval_employee_data[~upval_employee_data.index.isin(upval_employee_data_updates.index)].reset_index()
-upval_employee_data_updates = upval_employee_data_updates.reset_index()
-upval_employee_data = upval_employee_data.append(upval_employee_data_updates, ignore_index="True", verify_integrity="True").sort_values(by="EMP_NO").astype("str")
-active_only = upval_employee_data[upval_employee_data["EMP_STATUS"]=="Inactive"].index
-inactive_only = upval_employee_data.loc[active_only]
-inactive_only.to_csv(Path("../Resources/Source_data/Archive/"+timestamp+"_TERMINATIONS.csv"), index=False)
-upval_employee_data.drop(active_only, inplace=True)
 
-upval_employee_data.to_csv(Path("../Resources/Source_data/master.csv"), index=False)
-for i in tqdm(range(10)):
-    sleep(sleep_timer)
-print("Update Complete")
-os.system("pause")
-os.system("cls")
-#Updating Employee Master<final>
-print("Adding Good Records to Employee Master")
-upval_employee_data = pd.read_csv(Path("../Resources/Source_data/master.csv"), index_col = "EMP_NO", keep_default_na = False, dtype = {"SSN" : str, "BANK_RTN" : str, "BANK_ACC" : str})
-upval_employee_data_updates = pd.read_csv(Path("../Resources/Source_data/updates.csv"), index_col = "EMP_NO", keep_default_na = False, dtype = {"SSN" : str, "BANK_RTN" : str, "BANK_ACC" : str}) 
 upval_employee_data = upval_employee_data[~upval_employee_data.index.isin(upval_employee_data_updates.index)].reset_index()
 upval_employee_data_updates = upval_employee_data_updates.reset_index()
 upval_employee_data = upval_employee_data.append(upval_employee_data_updates, ignore_index="True", verify_integrity="True").sort_values(by="EMP_NO").astype("str")
@@ -277,22 +263,23 @@ inactive_only = upval_employee_data.loc[active_only]
 inactive_only.to_csv(Path("../Resources/Source_data/Archive/"+timestamp+"_TERMINATIONS.csv"), index=False)
 upval_employee_data.drop(active_only, inplace=True)
 upval_employee_data.to_csv(Path("../Resources/Source_data/master.csv"), index=False)
+
 for i in tqdm(range(10)):
     sleep(sleep_timer)
 print("Update Complete")
 os.system("pause")
 os.system("cls")
-#Loading Employee Data
-employee_data = pd.read_csv(Path("../Resources/Source_data/master1.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","FEDFILINGSTATUS","EMP_STATUS","PAYCODE","PAYRATE"])
+#Loading modified Employee Data
+employee_data = pd.read_csv(Path("../Resources/Source_data/master.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","FEDFILINGSTATUS","EMP_STATUS","PAYCODE","PAYRATE"])
 hour_data = pd.read_csv(Path("../Resources/Source_data/hours.csv")) 
-employee_ach_data = pd.read_csv(Path("../Resources/Source_data/master1.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","BANK_RTN","BANK_ACC"], dtype = {"BANK_RTN" : str, "BANK_ACC" : str})
+employee_ach_data = pd.read_csv(Path("../Resources/Source_data/master.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","BANK_RTN","BANK_ACC"], dtype = {"BANK_RTN" : str, "BANK_ACC" : str})
 #Generating Employee Report
 print("Here is the list of employees DUE for this payroll")
 employee_list = employee_data
 employee_list["WAGE_RATE"] = np.where(employee_list["PAYCODE"] == "Salary", (employee_list["PAYRATE"]/52),employee_list["PAYRATE"])
 print(employee_list.drop(["FEDFILINGSTATUS","PAYRATE"], axis=1).round(2))
 os.system("pause")
-os.system("clr")
+os.system("clS")
 print("Here are inactivated employees NOT DUE for this Payroll")
 print(inactive_only)
 os.system("pause")
@@ -305,7 +292,7 @@ hourly_grid = pd.merge(hourly_emp_data, hour_data, how = "inner", on = "EMP_NO")
 hourly_grid["WAGES"] = np.where(hourly_grid["HOURS"] > 40, 
     ((hourly_grid["HOURS"]-40)*1.5*hourly_grid["PAYRATE"])+ (hourly_grid["PAYRATE"]*40), 
     (hourly_grid["HOURS"] * hourly_grid["PAYRATE"]))
-# hourly_grid.drop(["EMP_STATUS","PAYCODE","PAYRATE","HOURS"], axis=1).round(2)
+hourly_grid.drop(["EMP_STATUS","PAYCODE","PAYRATE","HOURS"], axis=1).round(2)
 
 #Calculating Salary Wages
 salary_grid = employee_data.loc[employee_data["PAYCODE"] == "Salary"]
@@ -362,10 +349,11 @@ employee_ach_data1 = pd.merge(final_wages, employee_ach_data, how="inner", on = 
 employee_ach_data2 = employee_ach_data1.drop(["FEDFILINGSTATUS","WAGES","WAGESANA","TAX","EMP_STATUS","PAYCODE", "PAYRATE", "HOURS"], axis=1).round(2)
 employee_ach_data2[["EMP_NO","NAME","BANK_RTN","BANK_ACC","NET_WAGES"]]
 employee_ach_data2.to_csv(Path("../Resources/Output_data/Archive/"+timestamp+"_ACH_UPLOAD.csv"), index=False)
-employee_ach_data2.to_csv(Path("../Resources/Output_data/ACH_UPLOAD.csv"), index=False) 
+emploY
+yee_ach_data2.to_csv(Path("../Resources/Output_data/ACH_UPLOAD.csv"), index=False) 
 for i in tqdm(range(10)):
     sleep(sleep_timer)
 print("Bank Upload Generation Complete and saved in ""Output_data"" folder")
 os.system("pause")
 os.system("cls")
-#CHECKPOINT
+print("Thank you for using Payroll Program")
