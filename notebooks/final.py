@@ -1,4 +1,3 @@
-#modified 536
 #Initialization<final>
 import os
 os.system("cls")
@@ -88,16 +87,16 @@ ques0 = input("Proceed with downloading employee updates and hours (Y / N) ?")
 if ques0 == "Y": 
         os.system("cls")
         print("Downloading Data...")
-        #Downloading Updates
-        # load_dotenv()
-        # server = os.getenv("ftp_server")
-        # username = os.getenv("ftp_user")
-        # password = os,getenv("ftp_pass")
-        # cnopts = pysftp.CnOpts()
-        # cnopts.hostkeys = None
-        # sftp = pysftp.Connection(server, username=username, password=password, cnopts=cnopts)
-        # sftp.get('/outbound/noonah_CHalling/updates.csv')
-        # sftp.get('/outbound/noonah_CHalling/hours.csv')
+        # Downloading Updates
+        load_dotenv()
+        server = os.getenv("ftp_server")
+        username = os.getenv("ftp_user")
+        password = os.getenv("ftp_pass")
+        cnopts = pysftp.CnOpts()
+        cnopts.hostkeys = None
+        sftp = pysftp.Connection(server, username=username, password=password, cnopts=cnopts)
+        sftp.get('/outbound/noonah_CHalling/updates.csv')
+        sftp.get('/outbound/noonah_CHalling/hours.csv')
         for i in tqdm(range(10)):
             sleep(sleep_timer)
         print("Download Complete")
