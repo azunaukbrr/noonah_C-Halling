@@ -1,9 +1,5 @@
 # noonah_C-Halling
 
-Payroll System
-    The idea is to have a payroll system which 
-        Pulls data from external sources, 
-        uploads / updates on to a central database, 
-        Processes payroll calculations
-        Generates Payments
-        Uploads the payment file to the bank's server
+##Payroll System
+    This is a Payroll Processing Program designed to retrieve information from the employee self service portal, validate / update data to Employee Master Records and process payroll with ACH file output
+        
