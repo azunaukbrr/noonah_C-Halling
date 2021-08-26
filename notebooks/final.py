@@ -1,3 +1,4 @@
+#modified 536
 #Initialization<final>
 import os
 os.system("cls")
@@ -262,7 +263,7 @@ active_only = upval_employee_data[upval_employee_data["EMP_STATUS"]=="Inactive"]
 inactive_only = upval_employee_data.loc[active_only]
 inactive_only.to_csv(Path("../Resources/Source_data/Archive/"+timestamp+"_TERMINATIONS.csv"), index=False)
 upval_employee_data.drop(active_only, inplace=True)
-upval_employee_data.to_csv(Path("../Resources/Source_data/master.csv"), index=False)
+upval_employee_data.to_csv(Path("../Resources/Exceptions/new_master.csv"), index=False)
 
 for i in tqdm(range(10)):
     sleep(sleep_timer)
@@ -270,9 +271,9 @@ print("Update Complete")
 os.system("pause")
 os.system("cls")
 #Loading modified Employee Data
-employee_data = pd.read_csv(Path("../Resources/Source_data/master.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","FEDFILINGSTATUS","EMP_STATUS","PAYCODE","PAYRATE"])
+employee_data = pd.read_csv(Path("../Resources/Exceptions/new_master.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","FEDFILINGSTATUS","EMP_STATUS","PAYCODE","PAYRATE"])
 hour_data = pd.read_csv(Path("../Resources/Source_data/hours.csv")) 
-employee_ach_data = pd.read_csv(Path("../Resources/Source_data/master.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","BANK_RTN","BANK_ACC"], dtype = {"BANK_RTN" : str, "BANK_ACC" : str})
+employee_ach_data = pd.read_csv(Path("../Resources/Exceptions/new_master.csv"), header = 0, usecols = ["EMP_NO","FIRST_NAME","LAST_NAME","BANK_RTN","BANK_ACC"], dtype = {"BANK_RTN" : str, "BANK_ACC" : str})
 #Generating Employee Report
 print("Here is the list of employees DUE for this payroll")
 employee_list = employee_data
@@ -280,10 +281,10 @@ employee_list["WAGE_RATE"] = np.where(employee_list["PAYCODE"] == "Salary", (emp
 print(employee_list.drop(["FEDFILINGSTATUS","PAYRATE"], axis=1).round(2))
 os.system("pause")
 os.system("clS")
-print("Here are inactivated employees NOT DUE for this Payroll")
-print(inactive_only)
-os.system("pause")
-os.system("cls")
+# print("Here are inactivated employees NOT DUE for this Payroll")
+# print(inactive_only)
+# os.system("pause")
+# os.system("cls")
 print("Calculating Payroll...")
 #Calculating Hourly Wages
 hourly_emp_data = employee_data.loc[employee_data["PAYCODE"] == "Hourly"]
@@ -347,10 +348,9 @@ print("Generating Bank Upload File")
 employee_ach_data["NAME"] = (employee_ach_data["FIRST_NAME"]) + [" "] + (employee_ach_data["LAST_NAME"])
 employee_ach_data1 = pd.merge(final_wages, employee_ach_data, how="inner", on = "EMP_NO")
 employee_ach_data2 = employee_ach_data1.drop(["FEDFILINGSTATUS","WAGES","WAGESANA","TAX","EMP_STATUS","PAYCODE", "PAYRATE", "HOURS"], axis=1).round(2)
-employee_ach_data2[["EMP_NO","NAME","BANK_RTN","BANK_ACC","NET_WAGES"]]
-employee_ach_data2.to_csv(Path("../Resources/Output_data/Archive/"+timestamp+"_ACH_UPLOAD.csv"), index=False)
-emploY
-yee_ach_data2.to_csv(Path("../Resources/Output_data/ACH_UPLOAD.csv"), index=False) 
+employee_ach_data3 = employee_ach_data2[["EMP_NO","NAME","BANK_RTN","BANK_ACC","NET_WAGES"]]
+employee_ach_data3.to_csv(Path("../Resources/Output_data/Archive/"+timestamp+"_ACH_UPLOAD.csv"), index=False)
+employee_ach_data3.to_csv(Path("../Resources/Output_data/ACH_UPLOAD.csv"), index=False) 
 for i in tqdm(range(10)):
     sleep(sleep_timer)
 print("Bank Upload Generation Complete and saved in ""Output_data"" folder")
